@@ -12,12 +12,7 @@ def remove_punctuation_marks(text):
     punctuation_marks = {'!', '"', ';', ':', '?', '-', '.', ',', '\'', '—', '\''}
 
     for letter in text:
-        is_mark = False
-        for mark in punctuation_marks:
-            if letter == mark:
-                is_mark = True
-                continue
-        if not is_mark:
+        if letter not in punctuation_marks:
             result += letter
 
     return result
@@ -36,22 +31,17 @@ def vowels_counter(text):
     vowels = {'а', 'е', 'ё', 'и', 'о', 'у', 'ы', 'э', 'ю', 'я'}
 
     for letter in text:
-        for vowel in vowels:
-            if letter == vowel:
-                vowels_count += 1
-                continue
+        if letter in vowels:
+            vowels_count += 1
+
     return vowels_count
 
 
-def word_repetition_counter(words):
-    unique_words = set(words)
+def word_repetition_counter(text):
+    unique_words = set(text.split())
 
     for unique_word in unique_words:
-        count = 0
-        for word in words:
-            if unique_word == word:
-                count += 1
-        yield f"{unique_word} - {count}"
+        yield f"{unique_word} - {text.count(f' {unique_word} ')}"
 
 
 def description():
@@ -77,12 +67,13 @@ def main():
         words = text_without_punctuation_mars.split()
         vowels_count = vowels_counter(text_without_punctuation_mars)
 
-        print(f"\nКоличество слов в тексте: {len(words)}")
-        print(f"Самое длинное слово: {get_longest_word(words)}")
-        print(f"Количество гласных букв: {vowels_count}")
+        print(f"\nКоличество слов в тексте: {len(words)}"
+              f"\nСамое длинное слово: {get_longest_word(words)}"
+              f"\nКоличество гласных букв: {vowels_count}")
 
         print("\nПОВТОРЕНИЕ СЛОВ:")
-        for repeated_word in word_repetition_counter(words):
+        for repeated_word in (word_repetition_counter
+            (text_without_punctuation_mars)):
             print(repeated_word)
 
 
